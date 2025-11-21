@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum BookingStatus {
+  pending
+  approved
+  rejected
+  completed
+  cancelled
+}
+
+enum VehicleStatus {
+  available
+  in_use
+  maintenance
+}
+
+enum DriverStatus {
+  active
+  inactive
+}
+
+enum UserRole {
+  admin
+  approver
+  user
+}
+
+enum UserStatus {
+  active
+  inactive
+}
+
+model Booking {
+  id             Int            @id @default(autoincrement()) @db.UnsignedInt
+  bookingCode    String         @unique @map("booking_code") @db.VarChar(20)
+  vehicleId      Int            @map("vehicle_id") @db.UnsignedInt
+  driverId       Int?           @map("driver_id") @db.UnsignedInt
+  requesterId    Int            @map("requester_id") @db.UnsignedInt
+  startDatetime  DateTime       @map("start_datetime")
+  endDatetime    DateTime       @map("end_datetime")
+  destination    String         @db.VarChar(255)
+  purpose        String?        @db.Text
+  passengerCount Int?           @map("passenger_count") @db.UnsignedTinyInt
+  status         BookingStatus  @default(pending)
+  approvedBy     Int?           @map("approved_by") @db.UnsignedInt
+  approvedAt     DateTime?      @map("approved_at")
+  notes          String?        @db.Text
+  createdAt      DateTime       @map("created_at") @default(now())
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+  driver    Driver? @relation(fields: [driverId], references: [id], onDelete: SetNull)
+  requester User    @relation("RequestedBookings", fields: [requesterId], references: [id])
+  approver  User?   @relation("ApprovedBookings", fields: [approvedBy], references: [id], onDelete: SetNull)
+
+  @@index([vehicleId])
+  @@index([driverId])
+  @@index([requesterId])
+  @@index([approvedBy])
+  @@map("bookings")
+}
+
+model Vehicle {
+  id               Int            @id @default(autoincrement()) @db.UnsignedInt
+  licensePlate     String         @map("license_plate") @db.VarChar(20)
+  brandModel       String         @map("brand_model") @db.VarChar(150)
+  vehicleType      String         @map("vehicle_type") @db.VarChar(60)
+  capacity         Int            @default(4) @db.UnsignedTinyInt
+  status           VehicleStatus  @default(available)
+  assignedDriverId Int?           @map("assigned_driver_id") @db.UnsignedInt
+  createdAt        DateTime       @map("created_at") @default(now())
+
+  assignedDriver Driver?   @relation(fields: [assignedDriverId], references: [id], onDelete: SetNull)
+  bookings       Booking[]
+
+  @@index([assignedDriverId])
+  @@map("vehicles")
+}
+
+model Driver {
+  id               Int           @id @default(autoincrement()) @db.UnsignedInt
+  name             String        @db.VarChar(150)
+  phone            String        @db.VarChar(30)
+  licenseNo        String        @map("license_no") @db.VarChar(80)
+  experienceYears  Int           @map("experience_years") @default(0) @db.UnsignedTinyInt
+  status           DriverStatus  @default(active)
+  createdAt        DateTime      @map("created_at") @default(now())
+
+  vehicles Vehicle[]
+  bookings Booking[]
+
+  @@map("drivers")
+}
+
+model User {
+  id                  Int           @id @default(autoincrement()) @db.UnsignedInt
+  username            String        @unique @db.VarChar(50)
+  password            String        @db.VarChar(255)
+  fullName            String        @map("full_name") @db.VarChar(150)
+  role                UserRole      @default(user)
+  department          String?       @db.VarChar(100)
+  position            String?       @db.VarChar(150)
+  status              UserStatus    @default(active)
+  createdAt           DateTime      @map("created_at") @default(now())
+
+  requestedBookings   Booking[]     @relation("RequestedBookings")
+  approvedBookings    Booking[]     @relation("ApprovedBookings")
+
+  @@map("users")
+}

@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --font-sans: var(--font-kanit);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--foreground);
+  }
+
+  .print-page {
+    box-sizing: border-box;
+    width: 186mm;
+    max-width: 186mm;
+    margin: 0 auto;
+    padding: 10mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform-origin: top center;
+  }
+
+  .print-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Limit printing to the intended sheet when print mode is active */
+  body.print-mode,
+  html.print-mode {
+    width: 210mm;
+    margin: 0 auto;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  body.print-mode * {
+    visibility: hidden;
+  }
+
+  body.print-mode > *:not(.print-root) {
+    display: none !important;
+  }
+
+  body.print-mode .print-root,
+  body.print-mode .print-root * {
+    visibility: visible;
+  }
+
+  body.print-mode .print-root {
+    position: static !important;
+    inset: auto !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    box-shadow: none !important;
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
 }
