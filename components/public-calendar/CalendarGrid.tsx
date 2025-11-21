@@ -18,7 +18,7 @@ export function CalendarGrid({ weeks, monthName, year, navigation, thaiDays, can
       "badge-full": "bg-[#f4cf44] text-[#3c2b00]",
       "badge-morning": "bg-[#2e66d7] text-white",
       "badge-afternoon": "bg-[#4f9df5] text-white",
-      "badge-pending": "bg-[#f9b1bc] text-[#8a2b3d]",
+      "badge-pending": "bg-[#92eba8] text-[#8a2b3d]",
     }),
     []
   );

@@ -14,7 +14,7 @@ export default function LoginPage() {
           <div className="mb-6 text-center">
             <h1 className="text-2xl font-semibold text-slate-900">เข้าสู่ระบบ</h1>
             <p className="mt-2 text-sm text-slate-600">
-              ฟอร์มนี้จะเชื่อมต่อ server action ตรวจสอบ username/password จาก Prisma
+              
             </p>
           </div>
           <LoginForm />
