@@ -13,7 +13,7 @@ export function Navbar({ fullName, role }: Props) {
     <header className="bg-[#0a7bf2] text-white shadow">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link href="/dashboard" className="text-lg font-semibold text-white">
-          ระบบจองรถ สำนักงานสาธารณสุขจังหวัดอุบลราชธานี
+          ระบบขอใช้รถ สำนักงานสาธารณสุขจังหวัดอุบลราชธานี
         </Link>
         <div className="flex items-center gap-4 text-sm text-white">
           <div className="text-right leading-tight">

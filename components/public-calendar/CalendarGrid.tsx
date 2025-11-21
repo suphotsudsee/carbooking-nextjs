@@ -7,9 +7,10 @@ import Link from "next/link";
 
 type Props = CalendarData & {
   thaiDays: string[];
+  canBook?: boolean;
 };
 
-export function CalendarGrid({ weeks, monthName, year, navigation, thaiDays }: Props) {
+export function CalendarGrid({ weeks, monthName, year, navigation, thaiDays, canBook }: Props) {
   const [selected, setSelected] = useState<CalendarEvent | null>(null);
 
   const statusColor: Record<CalendarBadge, string> = useMemo(
@@ -32,22 +33,32 @@ export function CalendarGrid({ weeks, monthName, year, navigation, thaiDays }: P
             </h1>
             <p className="text-sm text-slate-600">คลิกวันที่เพื่อดูรายละเอียดการจอง</p>
           </div>
-          <div className="flex items-center gap-3 text-sm font-medium">
-            <Link
-              className="rounded-full border border-[#d6d9e0] px-3 py-1 text-[#2e66d7] hover:bg-[#eff3fc]"
-              href={`/?month=${navigation.prev.month}&year=${navigation.prev.year}`}
-            >
-              &lt; เดือนก่อนหน้า
-            </Link>
-            <Link
-              className="rounded-full border border-[#d6d9e0] px-3 py-1 text-[#2e66d7] hover:bg-[#eff3fc]"
-              href={`/?month=${navigation.next.month}&year=${navigation.next.year}`}
-            >
-              เดือนถัดไป &gt;
-            </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            {canBook ? (
+              <Link
+                href="/dashboard"
+                className="rounded-full bg-[#f4cf44] px-4 py-2 text-sm font-semibold text-[#3c2b00] shadow transition hover:bg-[#efc52c]"
+              >
+                จองรถ
+              </Link>
+            ) : null}
+            <div className="flex items-center gap-3 text-sm font-medium">
+              <Link
+                className="rounded-full border border-[#d6d9e0] px-3 py-1 text-[#2e66d7] hover:bg-[#eff3fc]"
+                href={`/?month=${navigation.prev.month}&year=${navigation.prev.year}`}
+              >
+                &lt; เดือนก่อนหน้า
+              </Link>
+              <Link
+                className="rounded-full border border-[#d6d9e0] px-3 py-1 text-[#2e66d7] hover:bg-[#eff3fc]"
+                href={`/?month=${navigation.next.month}&year=${navigation.next.year}`}
+              >
+                เดือนถัดไป &gt;
+              </Link>
+            </div>
           </div>
         </div>
-        <div className="grid grid-cols-7 border-b border-[#d6d9e0] bg-[#2e66d7] text-center text-sm font-semibold text-white">
+        <div className="grid grid-cols-7 border-b border-[#d6d9e0] bg-[#0a7bf2] text-center text-sm font-semibold text-white">
           {thaiDays.map((day) => (
             <div key={day} className="px-2 py-3">
               {day}
@@ -69,7 +80,7 @@ export function CalendarGrid({ weeks, monthName, year, navigation, thaiDays }: P
                   >
                     <div className="flex items-center justify-between text-sm font-semibold text-slate-800">
                       <span>{day.day}</span>
-                      {day.is_today && <span className="text-2xl text-[#8a6b00]">วันนี้</span>}
+                      {day.is_today && <span className="text-xs text-[#8a6b00]">วันนี้</span>}
                     </div>
                     <div className="mt-2 space-y-1">
                       {day.events.map((event, i) => (

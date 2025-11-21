@@ -5,7 +5,7 @@ export function PublicHeader() {
     <header className="bg-[#0a7bf2] text-white shadow">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="text-base font-semibold">
-          ระบบจองรถ สำนักงานสารธารณสุขจังหวัดอุบลราชธานี
+          ระบบขอใช้รถ สำนักงานสารธารณสุขจังหวัดอุบลราชธานี
         </Link>
         <Link
           href="/login"

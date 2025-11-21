@@ -22,6 +22,8 @@ export default async function DashboardPage() {
           drivers={data.drivers}
           users={data.users}
           canViewUsers={session.user.role === "admin"}
+          canCreateBooking={session.user.role === "user"}
+          canApprove={session.user.role !== "user"}
         />
       </div>
     </div>
