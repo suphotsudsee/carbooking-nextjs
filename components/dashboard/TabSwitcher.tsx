@@ -1736,12 +1736,14 @@ function LabeledInput({
   value,
   onChange,
   type = "text",
+  min,
   placeholder,
 }: {
   label: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: string;
+  min?: number;
   placeholder?: string;
 }) {
   return (
@@ -1751,6 +1753,7 @@ function LabeledInput({
         value={value}
         onChange={onChange}
         type={type}
+        min={min}
         placeholder={placeholder}
         className="rounded-lg border border-slate-200 px-3 py-2 text-slate-900 shadow-sm focus:border-blue-500 focus:outline-none"
       />
